@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 class DbSettings(BaseSettings):
@@ -12,7 +12,9 @@ class DbSettings(BaseSettings):
     POSTGRES_HOST: str = "localhost"
     postgres_port: str = "postgres_port"
     postgres_db: str = "postgres_db"
-    db_echo: str = True
+    db_echo: bool = True
 
+
+    @property
     def db_url(self) -> str:
-        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        return f"postgresql+asyncpg://{self.postgres_user}:{self.postgres_password}@{self.POSTGRES_HOST}:{self.postgres_port}/{self.postgres_db}"
