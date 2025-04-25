@@ -7,13 +7,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 class DbSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=BASE_DIR / ".env")
 
-    user: str = "postgres_user"
-    password: str = "postgres_password"
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
     host: str = "localhost"
-    port: str = "postgres_port"
-    name: str = "postgres_db"
+    POSTGRES_PORT: int
+    POSTGRES_DB: str
     echo: bool = True
 
     @property
     def url(self) -> str:
-        return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
+        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.host}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+
+
+print(f"Env file path: {BASE_DIR / '.env'}")
+print(f"File exists: {(BASE_DIR / '.env').exists()}")
